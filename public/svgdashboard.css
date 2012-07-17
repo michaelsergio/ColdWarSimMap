@@ -1,0 +1,20 @@
+#settings{
+  display:inline;
+}
+#visualization_year{
+  display: inline;
+  padding-left: 20px;
+}
+#year {
+  display:inline;
+}
+#year_val {
+  display:inline;
+}
+#type {
+  display:inline;
+}
+#visualization {
+  height: 400px; 
+  width: 800px; 
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="svgdashboard.js"></script>
+  <link rel="stylesheet" href="svgdashboard.css" />
+</head>
+<body>
+  <div id="settings">
+    <label for="year">Year</label>
+    <input id="year" type="range" name="points" 
+           min="1985" max="2010" value="1985"  onchange="showValue(this.value)"/>
+    <div id="year_val">1985</div>
+
+    <label for="type"></label>
+    <select id="type">
+      <option value="civilian">Civilian Population</option>
+      <option value="military">Military Population</option>
+      <option value="agriculture">Agricultural Output</option>
+      <option value="industry">Industrial Output</option>
+    </select>
+    <input type="submit" value="Update" onclick="showChart()"/>
+  </div>
+  <h2 id="visualization_year"></h2>
+  <object data="BlankMap-World_1959.svg" type="image/svg+xml" id="visualization"></object>
+
+
+</body>
+</html>
