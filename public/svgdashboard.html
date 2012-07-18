@@ -4,6 +4,13 @@
 	<meta charset="UTF-8">
 	<title></title>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <!-->
+  <script type="text/javascript" 
+        src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+  </script>
+  <script type="text/javascript" src="jquery.tooltip.js"></script>
+  <link rel="stylesheet" href="jquery.tooltip.css" />
+  <!-->
   <script type="text/javascript" src="svgdashboard.js"></script>
   <link rel="stylesheet" href="svgdashboard.css" />
 </head>
@@ -11,11 +18,12 @@
   <div id="settings">
     <label for="year">Year</label>
     <input id="year" type="range" name="points" 
-           min="1985" max="2010" value="1985"  onchange="showValue(this.value)"/>
-    <div id="year_val">1985</div>
+           min="1945" max="2010" value="1950"  onchange="showValue(this.value)"/>
+    <div id="year_val"></div>
 
     <label for="type"></label>
     <select id="type">
+      <option value="alliances">Alliances</option>
       <option value="civilian">Civilian Population</option>
       <option value="military">Military Population</option>
       <option value="agriculture">Agricultural Output</option>
@@ -25,7 +33,8 @@
   </div>
   <h2 id="visualization_year"></h2>
   <object data="BlankMap-World_1959.svg" type="image/svg+xml" id="visualization"></object>
-
+  <h3 id="info"></h3>
+  <div id="alliances"></div>
 
 </body>
 </html>
