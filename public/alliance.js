@@ -148,7 +148,7 @@ function makeAlliance() {
     setMouseOver(cc);
     colorCountry(cc, this);
     console.log(cc);
-    setDisplayInfo(cc);
+    //setDisplayInfo(cc);
   }
 }
 
@@ -227,6 +227,7 @@ function setMouseOver(cc) {
   countryApply(cc, function(country) {
     //var in_arg = "setCountryStroke('" + country.id + "',  3, 'black')";
     country.onmouseover = function() {
+      document.getElementById("info").innerHTML=cc;
       opacify(cc, 0.4);
       /*
       $(this.parent()).attr('title', 'aus').tooltip({
