@@ -1,8 +1,5 @@
 Get multiple years working over multiple sheets.
 
-Clean up flag.
-Clean up UI.
-
 Add nice buttons to UI
 
 Give credit where credits due.

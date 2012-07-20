@@ -114,46 +114,49 @@ $(function(){
     el: $('#control'),
 
     events: {
-      "click #update": "updateMap"  
+      "click #type-pretty": "pretty",
+      "click #type-alliance": "alliance",
+      "click #type-civpop": "civpop",
+      "click #type-milpop": "milpop",
+      "click #type-totalpop": "totalpro",
+      "click #type-indupro": "indupro",
+      "click #type-agripro": "agripro",
+      "click #type-totalpro": "totalpro",
+      "click #type-nukes": "nukes",
     },
     
     initialize: function() {
       this.mapview = this.options.mapview;
     },
 
-    updateMap: function() {
-      var type = this.$el.find('#type').val();
-      if (type === "pretty") {
-        this.mapview.activateAll();
-      }
-      else if (type === "alliance") {
-        this.mapview.colorAllKnownAlliances();
-      }
-      //TODO write territory
-      else {
-        var color = this.getTypeColor(type);
-        this.mapview.colorResources(type, color);
-      }
-
+    pretty: function() {
+      this.mapview.colorAll();
+    },
+    alliance: function() {
+      this.mapview.colorAllKnownAlliances();
+    },
+    civpop: function() {
+      this.mapview.colorResources('civpop', 'blue');
+    },
+    milpop: function() {
+      this.mapview.colorResources('milpop', 'red');
+    },
+    agripro: function() {
+      this.mapview.colorResources('agripro', 'green');
+    },
+    indupro: function() {
+      this.mapview.colorResources('indupro', 'orange');
+    },
+    totalpop: function() {
+      this.mapview.colorResources('totalpop', 'purple');
+    },
+    totalpro: function() {
+      this.mapview.colorResources('totalpro', 'olive');
+    },
+    nukes: function() {
+      this.mapview.colorResources('nukes', 'brown');
     },
 
-
-    getTypeColor: function(type) {
-      switch (type){
-        case "milpop":
-          return 'red';
-        case "civpop":
-            return 'blue';
-        case "indupro":
-            return 'orange';
-        case "agripro":
-            return 'green';
-        case "nukes":
-            return 'nukes';
-        default:
-          return "purple";
-      }
-    }
   });
 
 
@@ -399,7 +402,7 @@ $(function(){
     initialize: function() {
       this.colorI = -1;
       this.infoview = this.options.infoview;
-      this.activateAll();
+      this.colorAll();
 
     },
 
@@ -416,7 +419,7 @@ $(function(){
 
     }, 
 
-    activateAll: function() {
+    colorAll: function() {
       this.resetMap();
       
       var nations = _.map(this.collection.models, function(member) {
@@ -456,12 +459,14 @@ $(function(){
         return obj;
       }, {});
 
+      if (!maxVal) {
+        color = '';
+      }
       _.each(resources, function(val, key) {
         // color nation with alpha set to value
         colorCountry(key, color);
         this.setMouseOver(key, false);
         opacify(key, val);
-
       }, this); 
     },
 
