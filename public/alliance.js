@@ -34,6 +34,16 @@ $(function(){
         return this.totalProduction();
       }
       return this.get(resources);  
+    },
+
+    getTerritories: function() {
+      var owns = this.get('territory').split(/\s+/);
+      owns.push(this.get('id'));
+      return owns;
+    },
+    
+    getPlayerUrl: function() {
+      return "http://www.reddit.com/user/" + this.get('player');
     }
 
   });
@@ -137,6 +147,8 @@ $(function(){
         case "indupro":
             return 'orange';
         case "agripro":
+            return 'black';
+        case "nukes":
             return 'green';
         default:
           return "purple";
@@ -243,7 +255,16 @@ $(function(){
   var InfoView = Backbone.View.extend({
     el: $('#info'),
 
+    events: {
+      "click #territory": "showTerritory"  
+    },
+
+    initialize: function() {
+      this.mapview = this.options.mapview;
+    },
+
     showNation: function(cc) {
+      this.cc = cc;
       var nation = this.collection.get(cc);
       this.$el.find('#name').text(nation.get('name'));
       this.$el.find('#year').text(nation.get('year'));
@@ -252,14 +273,74 @@ $(function(){
       this.$el.find('#nukes').text(nation.get('nukes'));
       this.$el.find('#agripro').text(nation.get('agripro'));
       this.$el.find('#indupro').text(nation.get('indupro'));
-      this.$el.find('#alliance').text(nation.get('alliance'));
       this.$el.find('#territory').text(nation.get('territory'));
       this.$el.find('#capital').text(nation.get('capital'));
       this.$el.find('#totalpop').text(nation.totalPopulation());
       this.$el.find('#totalpro').text(nation.totalProduction());
+      this.$el.find('#player').text(nation.get('player'));
+      this.$el.find('#player-url').text(nation.getPlayerUrl());
 
-      this.$el.find('#flag').attr('class', 'flag ' + nation.get('id'));
+      this.$el.find('#flag').attr('class', 'flag ' + nation.id);
+
+      // alliance
+      var alliance = nation.get('alliance');
+      this.$el.find('#alliance').text(alliance);
+      var allianceFlag = this.getAllianceFlag(alliance);
+      if (allianceFlag) {
+        var li = $("<li>");
+        li.addClass('flag');
+        li.addClass(allianceFlag);
+        this.$el.find('#alliance-flags').empty();
+        this.$el.find('#alliance-flags').append(li);
+      }
+      else {
+        this.$el.find('#alliance-flags').empty();
+      }
+    },
+
+    showTerritory: function() {
+      this.mapview.colorTerritory(this.cc);
+    },
+
+    getAllianceFlag: function(allianceName) {
+      switch(allianceName) {
+        case "African Union":
+          return "_African_Union(OAS)";
+        case "Arab League":
+            return "_Arab_League";
+        case "ASEAN":
+            return "_ASEAN";
+        case "CARICOM":
+          return "_CARICOM";
+        case "CIS":
+          return "_CIS";
+        case "Commonwealth":
+          return "_Commonwealth";
+        case "EU":
+          return "_European_Union";
+        case "Islamic Conference":
+          return "_Islamic_Conference";
+        case "NATO":
+          return "_NATO";
+        case "Olimpic Movement":
+          return "_Olimpic_Movement";
+        case "OPEC":
+          return "_OPEC";
+        case "Red Cross":
+          return "_Red_Cross";
+        case "UN":
+          return "_United_Nations";
+        // because I know this will come up
+        // hopefully I wont make to many people angry
+        case "USSR":
+        case "Warsaw Pact":
+          return "ma";
+        default:
+          return null;
+      }
+
     }
+
   });
 
   var SearchView = Backbone.View.extend({
@@ -427,10 +508,34 @@ $(function(){
         colorCountry(key, color);
         opacify(key, val);
       }); 
+    },
 
+    colorTerritory: function(cc) {
+      var color = this.randomColor();
+      var nation = this.collection.get(cc);
+      var land = nation.getTerritories();
+      // make a object for quick access
+      // split the world into has and hasnot
+      // blank color for the hasnot
 
+      var landObject = _.reduce(land, function(obj, item) {
+        obj[item] = 1;
+        return obj;
+      }, {});
 
-      // special for color territory
+      var groups = this.collection.groupBy(function(item) {
+        return _.has(landObject, item.id);
+      });
+
+      var has = groups[true] || [];
+      var hasnot = groups[false] || [];
+      
+      _.each(has, function(nation) {
+        colorCountry(nation.id, color);
+      });
+      _.each(hasnot, function(nation) {
+        colorCountry(nation.id, '');
+      });
 
     }
 
@@ -446,6 +551,7 @@ $(function(){
         var infoview = new InfoView({collection: world});
         var searchview = new SearchView({collection: world, infoview:infoview});
         var mapview = new MapView({collection: world, infoview: infoview});
+        infoview.mapview = mapview;
         var controlview = new ControlView({mapview: mapview});
       }
     });

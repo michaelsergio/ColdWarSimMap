@@ -57,6 +57,7 @@
       <option value="indupro">Industrial Output</option>
       <option value="totalpop">Total Population</option>
       <option value="totalpro">Total Output</option>
+      <option value="nukes">Nuclear Weapons</option>
     </select>
     <input type="submit" value="Update" id="update"/>
   </div>
@@ -69,7 +70,7 @@
 
   <div id="info">
     <ul class="f32">
-      <li id="flag" class="flag us"></li>
+      <li id="flag" class="flag"></li>
     </ul>
 
     <div>
@@ -78,47 +79,53 @@
     </div>
     <div>
       ✪ 
-      <span id="capitol">-</span>
-    <div>
-      Military Population: 
-      <span id="milpop">-</span>
+      <span id="capital">-</span>
     </div>
-    <div>
-      Civilian Population: 
-      <span id="civpop">-</span>
+    <div id="population">
+      <div>
+        Military Population: 
+        <span id="milpop">-</span>
+      </div>
+      <div>
+        Civilian Population: 
+        <span id="civpop">-</span>
+      </div>
+      <div>
+        Total Population: 
+        <span id="totalpop">-</span>
+      </div>
     </div>
-    <div>
-      Total Population: 
-      <span id="totalpop">-</span>
+
+    <div id="production">
+      <div>
+        Industrial Production: 
+        <span id="indupro">-</span>
+      </div>
+      <div>
+        Agricultural Production: 
+        <span id="agripro">-</span>
+      </div>
+      <div>
+        Total Production: 
+        <span id="totalpro">-</span>
+      </div>
     </div>
-    <div>
-      Industrial Production: 
-      <span id="indupro">-</span>
-    </div>
-    <div>
-      Agricultural Production: 
-      <span id="agripro">-</span>
-    </div>
-    <div>
-      Total Production: 
-      <span id="totalpro">-</span>
-    </div>
-    <div>
-      Nuclear Weapons: 
-      <span id="nukes">-</span>
-    </div>
-    <div>
-      Alliance: 
-      <ul id='alliance-flags' class="f32">
-        <li class="flag _NATO"></li>
-        <li class="flag _European_Union"></li>
-      </ul>
-      <span id="alliance">-</span>
-    </div>
-    <div>
-      Territory: 
-      <span id="territory">-</span>
-    </div>
+
+    <div id="political">
+      <div>
+        Nuclear Weapons: 
+        <span id="nukes">-</span>
+      </div>
+      <div>
+        Alliance: 
+        <ul id='alliance-flags' class="f32">
+        </ul>
+        <span id="alliance">-</span>
+      </div>
+      <div>
+        Territory: 
+        <span id="territory">-</span>
+      </div>
     </div>
   </div>
 
