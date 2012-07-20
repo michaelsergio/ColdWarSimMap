@@ -85,7 +85,6 @@ $(function(){
 
         var i;
         var results = [];
-        // TODO fix name and year 
         for (i = 0; i < data.D.length; i++) {
           var nameYear = data.getValue(i,2).split(":");
           var nation = {
@@ -424,7 +423,7 @@ $(function(){
     },
 
     resetMap: function() {
-      this.$el.find('#legend').empty();
+      $('#legend').text('');
 
       this.collection.map(function(nation) {
         var cc = nation.id;
