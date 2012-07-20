@@ -22,3 +22,27 @@
 .flag {
   height: 32px;
 }
+
+body { background-image:url('../tapestry_pattern.png'); }
+body { background-image:url('../extra_clean_paper.png'); }
+
+#map {
+  display:inline-block;
+}
+
+#info {
+  display:inline-block;
+}
+
+ul {
+  list-style-type: none;
+}
+
+#nation-flag {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  margin: 0;
+  padding: 0;
+  float: right;
+}

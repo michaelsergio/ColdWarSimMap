@@ -21,12 +21,6 @@
 
   
   <!--
-  <script type="text/javascript" 
-        src="http://cdnjs.cloudflare.com/ajax/libs/zepto/1.0rc1/zepto.min.js">
-  </script>
-  <script type="text/javascript" 
-        src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js">
-  </script>
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-33532400-1']);
@@ -38,7 +32,8 @@
        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
      })();
   </script>
-  -->
+  --!>
+  
 </head>
 <body>
   <div id="control">
@@ -59,23 +54,26 @@
       <option value="totalpro">Total Output</option>
       <option value="nukes">Nuclear Weapons</option>
     </select>
+
     <input type="submit" value="Update" id="update"/>
+
+    <h2 id="visualization_year"></h2>
   </div>
-  <h2 id="visualization_year"></h2>
-  <object data="BlankMap-World6.svg" type="image/svg+xml" id="visualization"></object>
-  <div class="search-widget">
-    <label for="search">Search for Country: </label>
-    <input id="search">
+
+  <div id="legend"></div>
+  
+  <div id="map">
+    <object data="BlankMap-World6.svg" type="image/svg+xml" id="visualization"></object>
   </div>
 
   <div id="info">
-    <ul class="f32">
-      <li id="flag" class="flag"></li>
-    </ul>
 
     <div>
       <span id="name">-</span> - 
       <span id="year">-</span>
+      <ul id="nation-flag" class="f32">
+        <li id="flag" class="flag"></li>
+      </ul>
     </div>
     <div>
       ✪ 
@@ -127,6 +125,11 @@
         <a id="territory" href="#">-</a>
       </div>
     </div>
+  </div>
+
+  <div class="search-widget">
+    <label for="search">Search for Country: </label>
+    <input id="search">
   </div>
 
 </body>

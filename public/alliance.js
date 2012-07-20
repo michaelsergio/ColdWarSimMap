@@ -403,13 +403,28 @@ $(function(){
 
     },
 
+    resetMap: function() {
+      this.$el.find('#legend').empty();
+
+      this.collection.map(function(nation) {
+        var cc = nation.id;
+        countryApply(cc, function(country) {
+          country.style['fill-opacity'] = 1; 
+        });
+      }, this);
+
+
+    }, 
+
     activateAll: function() {
+      this.resetMap();
+      
       var nations = _.map(this.collection.models, function(member) {
         return member.id;
       });
       _.each(nations, function(cc) {
         colorCountry(cc, this.randomColor());
-        this.setMouseOver(cc);
+        this.setMouseOver(cc, true);
       }, this);
       
       colorCountry('ocean', '#D6FFFF');
@@ -417,11 +432,66 @@ $(function(){
     },
 
     colorAllKnownAlliances: function() {
-      //TODO need to reset colors
+      this.resetMap();
+
       var map = this;
       var allies = this.collection.getAlliances();
       _.each(allies, function(val, key) {
         map.applyAlliance(key, val);
+      });
+    },
+
+    colorResources: function(type, color) {
+      this.resetMap();
+
+      var max = this.collection.max(function(nation) {
+        return nation.resourceToUse(type);
+      });
+
+      var maxVal = max.resourceToUse(type);
+
+      var resources = this.collection.reduce(function(obj, nation) {
+        var resource = nation.resourceToUse(type);
+        obj[nation.get('id')] = resource / maxVal;
+        return obj;
+      }, {});
+
+      _.each(resources, function(val, key) {
+        // color nation with alpha set to value
+        colorCountry(key, color);
+        this.setMouseOver(key, false);
+        opacify(key, val);
+
+      }, this); 
+    },
+
+    colorTerritory: function(cc) {
+      this.resetMap();
+
+      var color = this.randomColor();
+      var nation = this.collection.get(cc);
+      var land = nation.getTerritories();
+      // make a object for quick access
+      // split the world into has and hasnot
+      // blank color for the hasnot
+
+      var landObject = _.reduce(land, function(obj, item) {
+        obj[item] = 1;
+        return obj;
+      }, {});
+
+      var groups = this.collection.groupBy(function(item) {
+        return _.has(landObject, item.id);
+      });
+
+      var has = groups[true] || [];
+      var hasnot = groups[false] || [];
+      
+      _.each(has, function(nation) {
+        colorCountry(nation.id, color);
+      });
+      _.each(hasnot, function(nation) {
+        colorCountry(nation.id, '');
       });
     },
 
@@ -453,22 +523,24 @@ $(function(){
       this.makeAlliance(color, members);
 
       // make legend
-      var colorDiv = $('<p>');
-      colorDiv.text("■");
-      colorDiv.css('color', color);
-      colorDiv.css('display', 'inline');
+      if (name !== 'undefined') {
+        var colorDiv = $('<p>');
+        colorDiv.text("■");
+        colorDiv.css('color', color);
+        colorDiv.css('display', 'inline');
 
 
-      var nameDiv = $('<p>');
-      nameDiv.text(" " + name + " | ");
-      nameDiv.css('display', 'inline');
+        var nameDiv = $('<p>');
+        nameDiv.text(" " + name + " | ");
+        nameDiv.css('display', 'inline');
 
-      $('#alliances').append(colorDiv).append(nameDiv);
+        $('#legend').append(colorDiv).append(nameDiv);
+      }
     },
 
     makeAlliance: function(color, members) {
       _.each(members, function(cc) {
-        this.setMouseOver(cc);
+        this.setMouseOver(cc, true);
         colorCountry(cc, color);
       }, this);
     },
@@ -483,17 +555,26 @@ $(function(){
       });
     },
 
-    setMouseOver: function(cc) {
+    setMouseOver: function(cc, shouldOpacify) {
       var map = this;
+
+      // support legacy functions
+      if (shouldOpacify === undefined) {
+        shouldOpacify = true;
+      }
+
       countryApply(cc, function(country) {
         country.onmouseover = function() {
           map.infoview.showNation(cc);
-          opacify(cc, 0.4);
-          //XXX add tooltip?
+          if (shouldOpacify) {
+            opacify(cc, 0.4);
+          }
         };
 
         country.onmouseout = function() {
-          opacify(cc, 1);
+          if (shouldOpacify) {
+            opacify(cc, 1);
+          }
         };
       });
     },
@@ -501,58 +582,7 @@ $(function(){
     randomColor: function() {
       var rc = function() { return Math.floor(Math.random() * 256); };
       return 'rgb(' + rc() + ',' + rc() + ',' + rc() + ')';
-    },
-
-    colorResources: function(type, color) {
-      var max = this.collection.max(function(nation) {
-        return nation.resourceToUse(type);
-      });
-
-      var maxVal = max.resourceToUse(type);
-
-      var resources = this.collection.reduce(function(obj, nation) {
-        var resource = nation.resourceToUse(type);
-        obj[nation.get('id')] = resource / maxVal;
-        return obj;
-      }, {});
-
-      _.each(resources, function(val, key) {
-        // color nation with alpha set to value
-        colorCountry(key, color);
-        opacify(key, val);
-      }); 
-    },
-
-    colorTerritory: function(cc) {
-      var color = this.randomColor();
-      var nation = this.collection.get(cc);
-      var land = nation.getTerritories();
-      // make a object for quick access
-      // split the world into has and hasnot
-      // blank color for the hasnot
-
-      var landObject = _.reduce(land, function(obj, item) {
-        obj[item] = 1;
-        return obj;
-      }, {});
-
-      var groups = this.collection.groupBy(function(item) {
-        return _.has(landObject, item.id);
-      });
-
-      var has = groups[true] || [];
-      var hasnot = groups[false] || [];
-      
-      _.each(has, function(nation) {
-        colorCountry(nation.id, color);
-      });
-      _.each(hasnot, function(nation) {
-        colorCountry(nation.id, '');
-      });
-
     }
-
-
   });
 
   function pullAllData() {
