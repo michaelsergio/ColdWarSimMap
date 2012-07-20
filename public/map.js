@@ -285,7 +285,8 @@ $(function(){
     showNation: function(cc) {
       this.cc = cc;
       var nation = this.collection.get(cc);
-      this.$el.find('#name').text(nation.get('name'));
+      var nationName = nation.get('name');
+      this.$el.find('#name').text(nationName);
       this.$el.find('#year').text(nation.get('year'));
       this.$el.find('#civpop').text(nation.get('civpop'));
       this.$el.find('#milpop').text(nation.get('milpop'));
@@ -337,6 +338,7 @@ $(function(){
     getAllianceFlag: function(allianceName) {
       switch(allianceName) {
         case "African Union":
+        case "AU":
         case "LAN":
           return "_African_Union(OAS)";
         case "Arab League":
@@ -516,6 +518,8 @@ $(function(){
       _.each(hasnot, function(nation) {
         colorCountry(nation.id, '');
       });
+
+      $('#legend').text(nation.get('name') + "'s Territory");
     },
 
     getAllianceColor: function(name) {
