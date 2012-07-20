@@ -337,6 +337,7 @@ $(function(){
     getAllianceFlag: function(allianceName) {
       switch(allianceName) {
         case "African Union":
+        case "LAN":
           return "_African_Union(OAS)";
         case "Arab League":
             return "_Arab_League";
@@ -355,6 +356,7 @@ $(function(){
         case "NATO":
           return "_NATO";
         case "Olimpic Movement":
+        case "6MMB":
           return "_Olimpic_Movement";
         case "OPEC":
           return "_OPEC";
