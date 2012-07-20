@@ -19,11 +19,28 @@ var SPREADSHEET_URL = BASE + SPREADSHEET_QS;
 $(function(){
   var Nation = Backbone.Model.extend({
     totalPopulation: function() {
-      return this.get('milpop') + this.get('civpop');
+      var milpop = this.get('milpop'),
+          civpop = this.get('civpop'),
+          ret;
+      if (_.isNumber(milpop)) {
+        ret = _.isNumber(civpop) ? milpop + civpop : milpop;
+      }
+      else {
+        ret =  _.isNumber(civpop) ? civpop : 0;
+      }
+      return ret;
     },
 
     totalProduction: function() {
-      return this.get('indupro') + this.get('agripro');
+      var indupro = this.get('indupro'),
+          agripro = this.get('agripro');
+      if (_.isNumber(indupro)) {
+        ret = _.isNumber(agripro) ? indupro + agripro : indupro;
+      }
+      else {
+        ret = _.isNumber(agripro) ? agripro : 0;
+      }
+      return ret;
     },
 
     resourceToUse: function(resources) {
@@ -118,7 +135,7 @@ $(function(){
       "click #type-alliance": "alliance",
       "click #type-civpop": "civpop",
       "click #type-milpop": "milpop",
-      "click #type-totalpop": "totalpro",
+      "click #type-totalpop": "totalpop",
       "click #type-indupro": "indupro",
       "click #type-agripro": "agripro",
       "click #type-totalpro": "totalpro",
