@@ -53,3 +53,22 @@ ul {
 #legend {
   padding-left: 20px;
 }
+
+#nation-stats {
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+
+  display: box;
+  box-orient: horizontal;
+}
+
+#nation-stats > div {
+  -webkit-box-flex: 2;
+  -moz-box-flex: 2;
+  box-flex: 2; 
+}
+
+

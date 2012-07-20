@@ -66,6 +66,11 @@
     <object data="/worldmap.svg" type="image/svg+xml" id="visualization"></object>
   </div>
 
+  <div class="search-widget">
+    <label for="search">Search for Country: </label>
+    <input id="search">
+  </div>
+
   <div id="info">
 
     <div id="nation-info">
@@ -84,58 +89,55 @@
         Controlled by <a id="player" href=""></a>
       </div>
     </div>
-    <div id="population">
-      <div>
-        Military Population: 
-        <span id="milpop">-</span>
+    <div id="nation-stats">
+      <div id="population">
+        <div>
+          Military Population: 
+          <span id="milpop">-</span>
+        </div>
+        <div>
+          Civilian Population: 
+          <span id="civpop">-</span>
+        </div>
+        <div>
+          Total Population: 
+          <span id="totalpop">-</span>
+        </div>
       </div>
-      <div>
-        Civilian Population: 
-        <span id="civpop">-</span>
+
+      <div id="production">
+        <div>
+          Industrial Production: 
+          <span id="indupro">-</span>
+        </div>
+        <div>
+          Agricultural Production: 
+          <span id="agripro">-</span>
+        </div>
+        <div>
+          Total Production: 
+          <span id="totalpro">-</span>
+        </div>
       </div>
-      <div>
-        Total Population: 
-        <span id="totalpop">-</span>
+
+      <div id="political">
+        <div>
+          Nuclear Weapons: 
+          <span id="nukes">-</span>
+        </div>
+        <div>
+          Alliance: 
+          <ul id='alliance-flags' class="f32">
+            <li id="alliance-flag"></li>
+          </ul>
+          <span id="alliance">-</span>
+        </div>
+        <div>
+          Territory: 
+          <a id="territory" href="#">-</a>
+        </div>
       </div>
     </div>
-
-    <div id="production">
-      <div>
-        Industrial Production: 
-        <span id="indupro">-</span>
-      </div>
-      <div>
-        Agricultural Production: 
-        <span id="agripro">-</span>
-      </div>
-      <div>
-        Total Production: 
-        <span id="totalpro">-</span>
-      </div>
-    </div>
-
-    <div id="political">
-      <div>
-        Nuclear Weapons: 
-        <span id="nukes">-</span>
-      </div>
-      <div>
-        Alliance: 
-        <ul id='alliance-flags' class="f32">
-          <li id="alliance-flag"></li>
-        </ul>
-        <span id="alliance">-</span>
-      </div>
-      <div>
-        Territory: 
-        <a id="territory" href="#">-</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="search-widget">
-    <label for="search">Search for Country: </label>
-    <input id="search">
   </div>
 
 </body>
