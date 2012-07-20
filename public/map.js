@@ -147,9 +147,9 @@ $(function(){
         case "indupro":
             return 'orange';
         case "agripro":
-            return 'black';
-        case "nukes":
             return 'green';
+        case "nukes":
+            return 'nukes';
         default:
           return "purple";
       }
@@ -276,8 +276,10 @@ $(function(){
       this.$el.find('#capital').text(nation.get('capital'));
       this.$el.find('#totalpop').text(nation.totalPopulation());
       this.$el.find('#totalpro').text(nation.totalProduction());
-      this.$el.find('#player').text(nation.get('player'));
-      this.$el.find('#player-url').text(nation.getPlayerUrl());
+
+      var playerEl = this.$el.find('#player');
+      playerEl.text(nation.get('player'));
+      playerEl.attr('href', nation.getPlayerUrl());
 
       
       // flag
@@ -287,15 +289,13 @@ $(function(){
       var alliance = nation.get('alliance');
       this.$el.find('#alliance').text(alliance);
       var allianceFlag = this.getAllianceFlag(alliance);
+      var allianceFlagEl = this.$el.find('#alliance-flag');
       if (allianceFlag) {
-        var li = $("<li>");
-        li.addClass('flag');
-        li.addClass(allianceFlag);
-        this.$el.find('#alliance-flags').empty();
-        this.$el.find('#alliance-flags').append(li);
+        allianceFlagEl.attr('class', 'flag ' + allianceFlag);
       }
       else {
-        this.$el.find('#alliance-flags').empty();
+        allianceFlagEl.attr('class', '');
+
       }
       
       // territory
@@ -502,7 +502,6 @@ $(function(){
         case "undefined": return '';
       }
 
-      //this.colorI = this.colorI === undefined ? 0 : this.colorI + 1;
       this.colorI++;
       var colorList = ['green', 'orange', 'yellow', 'purple', 'cyan', 'magenta',
                        'lightgreen', 'red'];

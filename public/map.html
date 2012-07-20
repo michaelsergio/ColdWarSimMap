@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Cold War Sim</title>
-  <link rel="stylesheet" href="alliance.css" />
+  <link rel="stylesheet" href="map.css" />
   <link rel="stylesheet" type="text/css" href="flags32.css" />
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/themes/flick/jquery-ui.css" />
 
@@ -17,7 +17,7 @@
         src="backbone.js">
   </script>
 
-  <script type="text/javascript" src="alliance.js"></script>
+  <script type="text/javascript" src="map.js"></script>
 
   
   <!--
@@ -63,21 +63,26 @@
   <div id="legend"></div>
   
   <div id="map">
-    <object data="BlankMap-World6.svg" type="image/svg+xml" id="visualization"></object>
+    <object data="/worldmap.svg" type="image/svg+xml" id="visualization"></object>
   </div>
 
   <div id="info">
 
-    <div>
-      <span id="name">-</span> - 
-      <span id="year">-</span>
-      <ul id="nation-flag" class="f32">
-        <li id="flag" class="flag"></li>
-      </ul>
-    </div>
-    <div>
-      ✪ 
-      <span id="capital">-</span>
+    <div id="nation-info">
+      <div>
+        <span id="name">-</span> - 
+        <span id="year">-</span>
+        <ul id="nation-flag" class="f32">
+          <li id="flag" class="flag"></li>
+        </ul>
+      </div>
+      <div>
+        ✪ 
+        <span id="capital">-</span>
+      </div>
+      <div>
+        Controlled by <a id="player" href=""></a>
+      </div>
     </div>
     <div id="population">
       <div>
@@ -117,6 +122,7 @@
       <div>
         Alliance: 
         <ul id='alliance-flags' class="f32">
+          <li id="alliance-flag"></li>
         </ul>
         <span id="alliance">-</span>
       </div>

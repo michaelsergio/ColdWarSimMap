@@ -19,20 +19,9 @@
   width: 800px; 
 }
 
-.flag {
-  height: 32px;
-}
-
 body { background-image:url('../tapestry_pattern.png'); }
 body { background-image:url('../extra_clean_paper.png'); }
 
-#map {
-  display:inline-block;
-}
-
-#info {
-  display:inline-block;
-}
 
 ul {
   list-style-type: none;
@@ -43,6 +32,24 @@ ul {
   display: inline-block;
   width: 32px;
   margin: 0;
+  margin-right: 10px;
   padding: 0;
-  float: right;
+  float: left;
+}
+#alliance-flags {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  margin: 0;
+  margin-right: 10px;
+  padding: 0;
+  float: left;
+}
+
+.flag {
+  height: 32px;
+}
+
+#legend {
+  padding-left: 20px;
 }
