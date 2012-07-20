@@ -21,9 +21,21 @@ $(function(){
     totalPopulation: function() {
       return this.get('milpop') + this.get('civpop');
     },
+
     totalProduction: function() {
       return this.get('indupro') + this.get('agripro');
+    },
+
+    resourceToUse: function(resources) {
+      if (resources === "totalpop") {
+        return this.totalPopulation();
+      }
+      if (resources === "totalpro") {
+        return this.totalProduction();
+      }
+      return this.get(resources);  
     }
+
   });
 
   var World = Backbone.Collection.extend({
@@ -83,31 +95,48 @@ $(function(){
           return alliance; 
         }
       });
-      delete alliances[undefined];
       return alliances;
     },
-
   });
 
 
   var ControlView = Backbone.View.extend({
     el: $('#control'),
+
+    events: {
+      "click #update": "updateMap"  
+    },
     
     initialize: function() {
-      this.$typeElreturn = $("#type");
+      this.mapview = this.options.mapview;
     },
 
+    updateMap: function() {
+      var type = this.$el.find('#type').val();
+      if (type === "pretty") {
+        this.mapview.activateAll();
+      }
+      else if (type === "alliance") {
+        this.mapview.colorAllKnownAlliances();
+      }
+      //TODO write territory
+      else {
+        var color = this.getTypeColor(type);
+        this.mapview.colorResources(type, color);
+      }
+
+    },
 
 
     getTypeColor: function(type) {
       switch (type){
-        case "military":
+        case "milpop":
           return 'red';
-        case "civilian":
+        case "civpop":
             return 'blue';
-        case "industry":
+        case "indupro":
             return 'orange';
-        case "agriculture":
+        case "agripro":
             return 'green';
         default:
           return "purple";
@@ -306,6 +335,7 @@ $(function(){
       switch(name) {
         case "NATO": return 'blue';
         case "USSR": return 'brown';
+        case "undefined": return '';
       }
 
       //this.colorI = this.colorI === undefined ? 0 : this.colorI + 1;
@@ -379,18 +409,33 @@ $(function(){
       return 'rgb(' + rc() + ',' + rc() + ',' + rc() + ')';
     },
 
-    colorResources: function() {
+    colorResources: function(type, color) {
+      var max = this.collection.max(function(nation) {
+        return nation.resourceToUse(type);
+      });
+
+      var maxVal = max.resourceToUse(type);
+
+      var resources = this.collection.reduce(function(obj, nation) {
+        var resource = nation.resourceToUse(type);
+        obj[nation.get('id')] = resource / maxVal;
+        return obj;
+      }, {});
+
+      _.each(resources, function(val, key) {
+        // color nation with alpha set to value
+        colorCountry(key, color);
+        opacify(key, val);
+      }); 
+
+
+
+      // special for color territory
 
     }
 
 
   });
-
-
-  //TODO useless?
-  function ready() {
-    showChart();
-  }
 
   function pullAllData() {
     var world = new World();
@@ -400,11 +445,11 @@ $(function(){
 
         var infoview = new InfoView({collection: world});
         var searchview = new SearchView({collection: world, infoview:infoview});
-        var map = new MapView({collection: world, infoview: infoview});
+        var mapview = new MapView({collection: world, infoview: infoview});
+        var controlview = new ControlView({mapview: mapview});
       }
     });
   }
 
-  //pullAllData();
   google.setOnLoadCallback(pullAllData);
 });

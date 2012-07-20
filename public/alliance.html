@@ -49,13 +49,16 @@
 
     <label for="type"></label>
     <select id="type">
-      <option value="alliances">Alliances</option>
-      <option value="civilian">Civilian Population</option>
-      <option value="military">Military Population</option>
-      <option value="agriculture">Agricultural Output</option>
-      <option value="industry">Industrial Output</option>
+      <option value="pretty">Pretty</option>
+      <option value="alliance">Alliances</option>
+      <option value="civpop">Civilian Population</option>
+      <option value="milpop">Military Population</option>
+      <option value="agripro">Agricultural Output</option>
+      <option value="indupro">Industrial Output</option>
+      <option value="totalpop">Total Population</option>
+      <option value="totalpro">Total Output</option>
     </select>
-    <input type="submit" value="Update" onclick="showChart()"/>
+    <input type="submit" value="Update" id="update"/>
   </div>
   <h2 id="visualization_year"></h2>
   <object data="BlankMap-World6.svg" type="image/svg+xml" id="visualization"></object>
