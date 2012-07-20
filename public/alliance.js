@@ -273,13 +273,14 @@ $(function(){
       this.$el.find('#nukes').text(nation.get('nukes'));
       this.$el.find('#agripro').text(nation.get('agripro'));
       this.$el.find('#indupro').text(nation.get('indupro'));
-      this.$el.find('#territory').text(nation.get('territory'));
       this.$el.find('#capital').text(nation.get('capital'));
       this.$el.find('#totalpop').text(nation.totalPopulation());
       this.$el.find('#totalpro').text(nation.totalProduction());
       this.$el.find('#player').text(nation.get('player'));
       this.$el.find('#player-url').text(nation.getPlayerUrl());
 
+      
+      // flag
       this.$el.find('#flag').attr('class', 'flag ' + nation.id);
 
       // alliance
@@ -296,6 +297,18 @@ $(function(){
       else {
         this.$el.find('#alliance-flags').empty();
       }
+      
+      // territory
+      var territoryEl = this.$el.find('#territory');
+      var territoryCC = nation.get('territory').split(/\s+/);
+      var terrritoryNames = _.map(territoryCC, function(cc) {
+        if (cc) {
+          return this.collection.get(cc).get('name');
+        }
+      }, this);
+      territoryEl.text(terrritoryNames.join(', '));
+      territoryEl.attr('href', '#territory-' + cc);
+
     },
 
     showTerritory: function() {
