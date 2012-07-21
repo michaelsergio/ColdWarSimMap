@@ -209,57 +209,6 @@ $(function(){
   });
 
 
-  // SVG Map
-  // ============================================
-
-  function opacify(cc, val) {
-    countryApply(cc, function(country) {
-      country.style['fill-opacity'] = val; 
-    });
-  }
-
-  function getCountry(cc) {
-    return document.getElementById('visualization').contentDocument
-                   .getElementById(cc);
-  }
-
-  function colorCountry(cc, color) {
-    countryApply(cc, function(country) {
-      if (country === null) {
-        console.log("Country not found: " + cc);
-      }
-      else {
-        country.style.fill = color;
-      }
-    });
-  }
-
-  /*
-   * Because countries are made up of mutiple paths,
-   * this is used to apply functions to countries.
-   * cc -  ISO_3166 country codes + some missing old countries
-   *       as found in stupidCountryIds
-   * fn - functions(country) country will be a country element
-   */
-  function countryApply(cc, fn){
-    // using ISO_3166 country codes + some missing old countries
-    // http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
-    var i, paths;
-    //cc = stupidCountryIds[cc] || cc;
-    var country = document.getElementById('visualization').contentDocument
-                          .getElementById(cc);
-    if (country) {
-      fn(country);
-
-      paths = country.getElementsByTagName('path');
-      for (i = 0; i < paths.length; i++) {
-        fn(paths[i]);
-      }
-    }
-    else {
-      console.log("Country not found: " + cc);
-    }
-  }
 
   var InfoView = Backbone.View.extend({
     el: $('#info'),
@@ -288,10 +237,9 @@ $(function(){
         "OPEC": "_OPEC",
         "Red Cross": "_Red_Cross",
         "UN": "_United_Nations",
-        // because I know this will come up
-        // hopefully I wont make to many people angry
-        "USSR":"ma",
-        "Warsaw Pact": "ma",
+        "SU":"su",
+        "USSR":"su",
+        "Warsaw Pact": "su",
       };
     },
 
@@ -339,7 +287,7 @@ $(function(){
           return this.collection.get(cc).get('name');
         }
       }, this);
-      territoryEl.text(terrritoryNames.join(', '));
+      territoryEl.text(terrritoryNames.join(', ') || 'None');
       territoryEl.attr('href', '#territory-' + cc);
 
     },
@@ -402,7 +350,7 @@ $(function(){
 
       this.collection.map(function(nation) {
         var cc = nation.id;
-        countryApply(cc, function(country) {
+        this.countryApply(cc, function(country) {
           country.style['fill-opacity'] = 1; 
         });
       }, this);
@@ -417,12 +365,12 @@ $(function(){
         return member.id;
       });
       _.each(nations, function(cc) {
-        colorCountry(cc, this.randomColor());
+        this.colorCountry(cc, this.randomColor());
         this.setMouseOver(cc, true);
       }, this);
       
-      colorCountry('ocean', '#D6FFFF');
-      colorCountry('aq', '#E6FFFF');
+      this.colorCountry('ocean', '#D6FFFF');
+      this.colorCountry('aq', '#E6FFFF');
     },
 
     colorAllKnownAlliances: function() {
@@ -456,9 +404,9 @@ $(function(){
       
       // color each nation with alpha set to value
       _.each(resources, function(val, key) {
-        colorCountry(key, color);
+        this.colorCountry(key, color);
         this.setMouseOver(key, false);
-        opacify(key, val);
+        this.opacify(key, val);
       }, this); 
     },
 
@@ -482,11 +430,11 @@ $(function(){
       var hasnot = groups[false] || [];
       
       _.each(has, function(nation) {
-        colorCountry(nation.id, color);
-      });
+        this.colorCountry(nation.id, color);
+      }, this);
       _.each(hasnot, function(nation) {
-        colorCountry(nation.id, '');
-      });
+        this.colorCountry(nation.id, '');
+      }, this);
 
       $('#legend').text(nation.get('name') + "'s Territory");
     },
@@ -537,34 +485,24 @@ $(function(){
     makeAlliance: function(color, members) {
       _.each(members, function(cc) {
         this.setMouseOver(cc, true);
-        colorCountry(cc, color);
+        this.colorCountry(cc, color);
       }, this);
-    },
-
-    //TODO this will handle locking
-    setDisplayInfo: function(cc) {
-      var map = this;
-      countryApply(cc, function(country) {
-        country.onclick = function() {
-          map.infoview.showNation(cc);
-        };
-      });
     },
 
     setMouseOver: function(cc, shouldOpacify) {
       var map = this;
 
-      countryApply(cc, function(country) {
+      this.countryApply(cc, function(country) {
         country.onmouseover = function() {
           map.infoview.showNation(cc);
           if (shouldOpacify) {
-            opacify(cc, 0.4);
+            map.opacify(cc, 0.4);
           }
         };
 
         country.onmouseout = function() {
           if (shouldOpacify) {
-            opacify(cc, 1);
+            map.opacify(cc, 1);
           }
         };
       });
@@ -573,6 +511,53 @@ $(function(){
     randomColor: function() {
       var rc = function() { return Math.floor(Math.random() * 256); };
       return 'rgb(' + rc() + ',' + rc() + ',' + rc() + ')';
+    },
+
+    // SVG Map
+    // ============================================
+
+    opacify: function(cc, val) {
+      this.countryApply(cc, function(country) {
+        country.style['fill-opacity'] = val; 
+      });
+    },
+
+    colorCountry: function(cc, color) {
+      this.countryApply(cc, function(country) {
+        if (country === null) {
+          console.log("Country not found: " + cc);
+        }
+        else {
+          country.style.fill = color;
+        }
+      });
+    },
+
+    /*
+     * Because countries are made up of mutiple paths,
+     * this is used to apply functions to countries.
+     * cc -  ISO_3166 country codes + some missing old countries
+     *       as found in stupidCountryIds
+     * fn - functions(country) country will be a country element
+     */
+    countryApply: function(cc, fn){
+      // using ISO_3166 country codes + some missing old countries
+      // http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+      var i, paths;
+      //cc = stupidCountryIds[cc] || cc;
+      var country = document.getElementById('visualization').contentDocument
+                            .getElementById(cc);
+      if (country) {
+        fn(country);
+
+        paths = country.getElementsByTagName('path');
+        for (i = 0; i < paths.length; i++) {
+          fn(paths[i]);
+        }
+      }
+      else {
+        console.log("Country not found: " + cc);
+      }
     }
   });
 
