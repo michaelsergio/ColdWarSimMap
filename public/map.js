@@ -15,7 +15,7 @@ google.load('visualization', '1.0', {'packages':['geochart']});
 var BASE = "https://spreadsheets.google.com/spreadsheet/pub";
 var SPREADSHEET_QS = "?key=0AhRtQr8CRozEdDhKZ0ZaMTNTaE02NUVDekphSlBJTVE";
 var SPREADSHEET_URL = BASE + SPREADSHEET_QS;
-var START_YEAR = 1950;
+var START_YEAR = 1945;
 
 $(function(){
   var Nation = Backbone.Model.extend({

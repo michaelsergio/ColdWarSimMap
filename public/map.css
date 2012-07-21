@@ -19,7 +19,6 @@
   width: 800px; 
 }
 
-body { background-image:url('../tapestry_pattern.png'); }
 body { background-image:url('../extra_clean_paper.png'); }
 
 
@@ -83,4 +82,8 @@ ul {
 
 #timeline a {
   padding-right: 10px;
+}
+
+#footer {
+  padding-top: 20px;
 }
