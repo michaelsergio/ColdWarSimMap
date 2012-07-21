@@ -214,7 +214,8 @@ $(function(){
     el: $('#info'),
 
     events: {
-      "click #territory": "showTerritory"  
+      "click #territory": "showTerritory",
+      "click #name": "showTerritory"  
     },
 
     initialize: function() {
@@ -244,10 +245,17 @@ $(function(){
     },
 
     showNation: function(cc) {
-      this.cc = cc;
       var nation = this.collection.get(cc);
+      
+      if (!nation) {
+        return;
+      }
+
+      this.cc = cc;
+
       var nationName = nation.get('name');
-      this.$el.find('#name').text(nationName);
+      var nationNameEl = this.$el.find('#name');
+      nationNameEl.text(nationName);
       this.$el.find('#year').text(nation.get('year'));
       this.$el.find('#civpop').text(nation.get('civpop'));
       this.$el.find('#milpop').text(nation.get('milpop'));
@@ -257,6 +265,8 @@ $(function(){
       this.$el.find('#capital').text(nation.get('capital'));
       this.$el.find('#totalpop').text(nation.totalPopulation());
       this.$el.find('#totalpro').text(nation.totalProduction());
+
+      nationNameEl.attr('href', '#territory-' + nation.id);
 
       var playerEl = this.$el.find('#player');
       playerEl.text(nation.get('player'));
@@ -288,7 +298,7 @@ $(function(){
         }
       }, this);
       territoryEl.text(terrritoryNames.join(', ') || 'None');
-      territoryEl.attr('href', '#territory-' + cc);
+      territoryEl.attr('href', '#territory-' + cc.id);
 
     },
 
@@ -299,14 +309,18 @@ $(function(){
   });
 
   var SearchView = Backbone.View.extend({
-    el: $('#search'),
+    el: $('#search-widget'),
+
+    events: {
+      "keypress #search": "updateOnEnter"
+    },
 
     initialize: function() {
       this.infoview = this.options.infoview;
       
       // all names
       var nations = this.collection.map(function(nation) {
-        return nation.get('name');
+        return nation.get('name');  
       });
 
       // build reverse map
@@ -317,13 +331,12 @@ $(function(){
 
   
       var searchview = this;
-      var ac = this.$el.autocomplete({
+      var ac = this.$el.find('#search').autocomplete({
         source: nations,
         select: function(event, ui) {
           var selected = ui.item;
 
           ac.autocomplete('close');
-          //this.text(selected);
           var cc = searchview.reverseMap[selected.value];
           var nation = searchview.collection.get(cc);
           searchview.infoview.showNation(nation);
@@ -331,6 +344,15 @@ $(function(){
       });
 
     },
+      
+
+    updateOnEnter: function(event) {
+      if (event.keyCode === 13) {
+        var cc = this.reverseMap[this.$el.find('#search').val()];
+        var nation = this.collection.get(cc);
+        this.infoview.showNation(nation);
+      }
+    }
   });
 
 
@@ -579,7 +601,7 @@ $(function(){
         year = START_YEAR + i;
         a = $('<a>');
         a.addClass('year');
-        a.attr('href', '#year');
+        a.attr('href', '#year-' + year);
         a.text(year);
         this.$el.prepend(a);
       }
