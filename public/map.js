@@ -13,8 +13,9 @@
 google.load('visualization', '1.0', {'packages':['geochart']});
 
 var BASE = "https://spreadsheets.google.com/spreadsheet/pub";
-var SPREADSHEET_QS = "?key=0AhRtQr8CRozEdDhKZ0ZaMTNTaE02NUVDekphSlBJTVE&gid=1";
+var SPREADSHEET_QS = "?key=0AhRtQr8CRozEdDhKZ0ZaMTNTaE02NUVDekphSlBJTVE";
 var SPREADSHEET_URL = BASE + SPREADSHEET_QS;
+var START_YEAR = 1950;
 
 $(function(){
   var Nation = Backbone.Model.extend({
@@ -69,9 +70,18 @@ $(function(){
     model: Nation,
 
     fetch: function(options) {
+
+      var url = SPREADSHEET_URL;
+      // only call on pre initialized world
+      if (options.year && this.models.length) {
+        var currentYear = this.getYear();
+        var n = currentYear - options.year;
+        url = SPREADSHEET_URL + '&gid=' + n;
+      }
+
       var collection = this;
       var query_string = "select *";
-      var query = new google.visualization.Query(SPREADSHEET_URL);
+      var query = new google.visualization.Query(url);
       query.setQuery(query_string);
       query.send(function(response) {
         if (response.isError()) {
@@ -113,6 +123,13 @@ $(function(){
 
     },
 
+    getYear: function() {
+      //return first found instance of a year
+      //TODO change
+      var nation = this.get('us');
+      return nation.get('year');
+    },
+
     getAlliances: function() {
       var collection = this;
       var alliances = collection.groupBy(function(nation){
@@ -143,81 +160,54 @@ $(function(){
     
     initialize: function() {
       this.mapview = this.options.mapview;
+      this.lastAction = null;
     },
 
     pretty: function() {
       this.mapview.colorAll();
+      this.lastAction = 'pretty';
     },
     alliance: function() {
       this.mapview.colorAllKnownAlliances();
+      this.lastAction = 'alliance';
     },
     civpop: function() {
       this.mapview.colorResources('civpop', 'blue');
+      this.lastAction = 'civpop';
     },
     milpop: function() {
       this.mapview.colorResources('milpop', 'red');
+      this.lastAction = 'milpop';
     },
     agripro: function() {
       this.mapview.colorResources('agripro', 'green');
+      this.lastAction = 'agripro';
     },
     indupro: function() {
       this.mapview.colorResources('indupro', 'orange');
+      this.lastAction = 'indupro';
     },
     totalpop: function() {
       this.mapview.colorResources('totalpop', 'purple');
+      this.lastAction = 'totalpop';
     },
     totalpro: function() {
       this.mapview.colorResources('totalpro', 'olive');
+      this.lastAction = 'totalpro';
     },
     nukes: function() {
       this.mapview.colorResources('nukes', 'brown');
+      this.lastAction = 'nukes';
     },
+
+    repeatAction: function() {
+      if (this.lastAction) {
+        this[this.lastAction]();
+      }
+    }
 
   });
 
-
-  /*
-
-  function get_year_col(type, year) {
-    var delta_year, start_year_col;
-
-    switch (type){
-      case "military":
-        delta_year = 1985;
-        start_year_col = 'B';
-        break;
-      case "civilian":
-        delta_year = 1785;
-        start_year_col = 'E';
-        break;
-      case "agriculture":
-        delta_year = 1960;
-        start_year_col = 'B';
-        break;
-      case "industry":
-        delta_year = 1960;
-        start_year_col = 'B';
-        break;
-      default:
-        return '';
-    }
-
-    var delta = year - delta_year;
-    var year_col = col_add(start_year_col, delta);
-    return year_col;
-  }
-
-  */
-
-  function showValue(newValue)
-  {
-    $('#year_val').val(newValue);
-  }
-
-  function getYear()
-  {
-    return $("#year").val();
-  }
 
   // SVG Map
   // ============================================
@@ -280,6 +270,29 @@ $(function(){
 
     initialize: function() {
       this.mapview = this.options.mapview;
+      this.alliancesWithFlag = {
+        "African Union":"_African_Union(OAS)",
+        "AU":"_African_Union(OAS)",
+        "LAN":"_African_Union(OAS)",
+        "Arab League":"_Arab_League",
+        "AL":"_Arab_League",
+        "ASEAN" : "_ASEAN",
+        "CARICOM": "_CARICOM",
+        "CIS": "_CIS",
+        "Commonwealth": "_Commonwealth",
+        "EU": "_European_Union",
+        "Islamic Conference": "_Islamic_Conference",
+        "NATO": "_NATO",
+        "Olimpic Movement": "_Olimpic_Movement",
+        "6MMB":"_Olimpic_Movement",
+        "OPEC": "_OPEC",
+        "Red Cross": "_Red_Cross",
+        "UN": "_United_Nations",
+        // because I know this will come up
+        // hopefully I wont make to many people angry
+        "USSR":"ma",
+        "Warsaw Pact": "ma",
+      };
     },
 
     showNation: function(cc) {
@@ -305,18 +318,18 @@ $(function(){
       // flag
       this.$el.find('#flag').attr('class', 'flag ' + nation.id);
 
+      
       // alliance
       var alliance = nation.get('alliance');
       this.$el.find('#alliance').text(alliance);
-      var allianceFlag = this.getAllianceFlag(alliance);
-      var allianceFlagEl = this.$el.find('#alliance-flag');
+      var allianceFlag = this.alliancesWithFlag[alliance] || null;
       if (allianceFlag) {
-        allianceFlagEl.attr('class', 'flag ' + allianceFlag);
+        this.$el.find('#alliance-flag').attr('class', 'flag ' + allianceFlag);
       }
       else {
-        allianceFlagEl.attr('class', '');
-
+        this.$el.find('#alliance-flag').attr('class', '');
       }
+      
       
       // territory
       var territoryEl = this.$el.find('#territory');
@@ -334,48 +347,6 @@ $(function(){
     showTerritory: function() {
       this.mapview.colorTerritory(this.cc);
     },
-
-    getAllianceFlag: function(allianceName) {
-      switch(allianceName) {
-        case "African Union":
-        case "AU":
-        case "LAN":
-          return "_African_Union(OAS)";
-        case "Arab League":
-            return "_Arab_League";
-        case "ASEAN":
-            return "_ASEAN";
-        case "CARICOM":
-          return "_CARICOM";
-        case "CIS":
-          return "_CIS";
-        case "Commonwealth":
-          return "_Commonwealth";
-        case "EU":
-          return "_European_Union";
-        case "Islamic Conference":
-          return "_Islamic_Conference";
-        case "NATO":
-          return "_NATO";
-        case "Olimpic Movement":
-        case "6MMB":
-          return "_Olimpic_Movement";
-        case "OPEC":
-          return "_OPEC";
-        case "Red Cross":
-          return "_Red_Cross";
-        case "UN":
-          return "_United_Nations";
-        // because I know this will come up
-        // hopefully I wont make to many people angry
-        case "USSR":
-        case "Warsaw Pact":
-          return "ma";
-        default:
-          return null;
-      }
-
-    }
 
   });
 
@@ -482,8 +453,9 @@ $(function(){
       if (!maxVal) {
         color = '';
       }
+      
+      // color each nation with alpha set to value
       _.each(resources, function(val, key) {
-        // color nation with alpha set to value
         colorCountry(key, color);
         this.setMouseOver(key, false);
         opacify(key, val);
@@ -496,9 +468,6 @@ $(function(){
       var color = this.randomColor();
       var nation = this.collection.get(cc);
       var land = nation.getTerritories();
-      // make a object for quick access
-      // split the world into has and hasnot
-      // blank color for the hasnot
 
       var landObject = _.reduce(land, function(obj, item) {
         obj[item] = 1;
@@ -526,6 +495,7 @@ $(function(){
       switch(name) {
         case "NATO": return 'blue';
         case "USSR": return 'brown';
+        case "EU": return 'teal';
         case "undefined": return '';
       }
 
@@ -533,7 +503,7 @@ $(function(){
       var colorList = ['green', 'orange', 'yellow', 'purple', 'cyan', 'magenta',
                        'lightgreen', 'red'];
       if (this.colorI > colorList.length) {
-        return 'grey';
+        return this.randomColor();
       }
 
       return colorList[this.colorI];
@@ -584,11 +554,6 @@ $(function(){
     setMouseOver: function(cc, shouldOpacify) {
       var map = this;
 
-      // support legacy functions
-      if (shouldOpacify === undefined) {
-        shouldOpacify = true;
-      }
-
       countryApply(cc, function(country) {
         country.onmouseover = function() {
           map.infoview.showNation(cc);
@@ -611,6 +576,46 @@ $(function(){
     }
   });
 
+
+  var TimelineView = Backbone.View.extend({
+    el: $('#timeline'),
+
+    events: {
+      "click a.year": "yearClicked"
+    },
+
+    initialize: function() {
+      this.controlview = this.options.controlview;
+
+      this.currentYear = this.collection.getYear();
+      var nYears = this.currentYear - START_YEAR;
+      var a, i, year;
+      for (i=0; i <= nYears; i++) {
+        year = START_YEAR + i;
+        a = $('<a>');
+        a.addClass('year');
+        a.attr('href', '#year');
+        a.text(year);
+        this.$el.prepend(a);
+      }
+    },
+
+    yearClicked: function(event) {
+      var timeline = this;
+      var target = $(event.currentTarget);
+      var year = target.text();
+      this.collection.fetch({
+        year: year,
+
+        success: function(){
+          timeline.currentYear = year;
+          timeline.controlview.repeatAction();
+        }  
+      });
+    },
+
+  });
+
   function pullAllData() {
     var world = new World();
     world.fetch({
@@ -622,6 +627,8 @@ $(function(){
         var mapview = new MapView({collection: world, infoview: infoview});
         infoview.mapview = mapview;
         var controlview = new ControlView({mapview: mapview});
+        var timelineview = new TimelineView({collection: world,
+                                             controlview:controlview});
       }
     });
   }
