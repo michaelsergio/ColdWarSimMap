@@ -298,7 +298,7 @@ $(function(){
         }
       }, this);
       territoryEl.text(terrritoryNames.join(', ') || 'None');
-      territoryEl.attr('href', '#territory-' + cc.id);
+      territoryEl.attr('href', '#territory-' + cc);
 
     },
 
