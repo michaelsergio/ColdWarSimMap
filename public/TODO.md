@@ -1,11 +1,7 @@
-Get multiple years working over multiple sheets.
-
-Give credit where credits due.
-
 dblclick to show territories? or lock?
 
 
-Remove opacify and ColorCountry and anything else not in a namespace
+Clickable alliance to display specific alliance.
 
 
 add year field to map
