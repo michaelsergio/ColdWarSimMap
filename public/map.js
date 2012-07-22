@@ -444,23 +444,14 @@ $(function(){
       var nation = this.collection.get(cc);
       var land = nation.getTerritories();
 
-      var landObject = _.reduce(land, function(obj, item) {
-        obj[item] = 1;
-        return obj;
-      }, {});
-
-      var groups = this.collection.groupBy(function(item) {
-        return _.has(landObject, item.id);
-      });
-
-      var has = groups[true] || [];
-      var hasnot = groups[false] || [];
-      
-      _.each(has, function(nation) {
-        this.colorCountry(nation.id, color);
-      }, this);
-      _.each(hasnot, function(nation) {
+      // remove color from every nation
+      _.each(this.collection.models, function(nation) {
         this.colorCountry(nation.id, '');
+      }, this);
+
+      // add color to territories
+      _.each(land, function(cc) {
+        this.colorCountry(cc, color);
       }, this);
 
       $('#legend').text(nation.get('name') + "'s Territory");

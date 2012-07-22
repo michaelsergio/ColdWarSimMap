@@ -1,27 +1,13 @@
-dblclick to show territories? or lock?
+TODO
+=======
 
-
-Clickable alliance to display specific alliance.
-
-
-add year field to map
-========================
+* dblclick to lock territories
 
 
 
+* Clickable alliance to display specific alliance.
 
-
-got Year
-get year since 1950? (Start) in the year control
-add the approprate year slots
-
-whne year is changed, refetch the model
-
-
-
-
-
-remove console logs to logger
+* remove console logs to logger
 
 
 
