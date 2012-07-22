@@ -43,6 +43,11 @@ var ALLIANCE_FLAGS = {
   "Warsaw Pact": "su",
 };
 
+var NON_NATION_IDS = {
+  "aq": "Antartica",
+  "eh": "Western Sahara"
+};
+
 $(function(){
   var Nation = Backbone.Model.extend({
     totalPopulation: function() {
@@ -299,7 +304,8 @@ $(function(){
       var territoryCC = nation.get('territory').split(/\s+/);
       var terrritoryNames = _.map(territoryCC, function(cc) {
         if (cc) {
-          return this.collection.get(cc).get('name');
+          var nation = this.collection.get(cc);
+          return nation ? nation.get('name') : NON_NATION_IDS[cc];
         }
       }, this);
       territoryEl.text(terrritoryNames.join(', ') || 'None');
