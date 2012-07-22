@@ -37,6 +37,7 @@ var ALLIANCE_FLAGS = {
   "OPEC": "_OPEC",
   "Red Cross": "_Red_Cross",
   "UN": "_United_Nations",
+  "SAC": "sac",
   "SU":"su",
   "USSR":"su",
   "Warsaw Pact": "su",
