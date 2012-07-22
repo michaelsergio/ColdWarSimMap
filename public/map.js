@@ -17,6 +17,31 @@ var SPREADSHEET_QS = "?key=0AhRtQr8CRozEdDhKZ0ZaMTNTaE02NUVDekphSlBJTVE";
 var SPREADSHEET_URL = BASE + SPREADSHEET_QS;
 var START_YEAR = 1945;
 
+var ALLIANCE_FLAGS = {
+  "African Union":"_African_Union(OAS)",
+  "AU":"_African_Union(OAS)",
+  "LAN":"loan",
+  "LoAN": "loan",
+  "LOAN": "loan",
+  "Arab League":"_Arab_League",
+  "AL":"_Arab_League",
+  "ASEAN" : "_ASEAN",
+  "CARICOM": "_CARICOM",
+  "CIS": "_CIS",
+  "Commonwealth": "_Commonwealth",
+  "EU": "_European_Union",
+  "Islamic Conference": "_Islamic_Conference",
+  "NATO": "_NATO",
+  "Olimpic Movement": "_Olimpic_Movement",
+  "6MMB":"_Olimpic_Movement",
+  "OPEC": "_OPEC",
+  "Red Cross": "_Red_Cross",
+  "UN": "_United_Nations",
+  "SU":"su",
+  "USSR":"su",
+  "Warsaw Pact": "su",
+};
+
 $(function(){
   var Nation = Backbone.Model.extend({
     totalPopulation: function() {
@@ -220,28 +245,7 @@ $(function(){
 
     initialize: function() {
       this.mapview = this.options.mapview;
-      this.alliancesWithFlag = {
-        "African Union":"_African_Union(OAS)",
-        "AU":"_African_Union(OAS)",
-        "LAN":"_African_Union(OAS)",
-        "Arab League":"_Arab_League",
-        "AL":"_Arab_League",
-        "ASEAN" : "_ASEAN",
-        "CARICOM": "_CARICOM",
-        "CIS": "_CIS",
-        "Commonwealth": "_Commonwealth",
-        "EU": "_European_Union",
-        "Islamic Conference": "_Islamic_Conference",
-        "NATO": "_NATO",
-        "Olimpic Movement": "_Olimpic_Movement",
-        "6MMB":"_Olimpic_Movement",
-        "OPEC": "_OPEC",
-        "Red Cross": "_Red_Cross",
-        "UN": "_United_Nations",
-        "SU":"su",
-        "USSR":"su",
-        "Warsaw Pact": "su",
-      };
+      this.alliancesWithFlag = ALLIANCE_FLAGS;
     },
 
     showNation: function(cc) {
@@ -466,11 +470,12 @@ $(function(){
         case "NATO": return 'blue';
         case "USSR": return 'brown';
         case "EU": return 'teal';
+        case "LoAN": return 'green';
         case "undefined": return '';
       }
 
       this.colorI++;
-      var colorList = ['green', 'orange', 'yellow', 'purple', 'cyan', 'magenta',
+      var colorList = ['orange', 'yellow', 'purple', 'cyan', 'magenta',
                        'lightgreen', 'red'];
       if (this.colorI > colorList.length) {
         return this.randomColor();
