@@ -41,6 +41,8 @@ var ALLIANCE_FLAGS = {
   "SU":"su",
   "USSR":"su",
   "Warsaw Pact": "su",
+  "Greater Republic": "tgr",
+  "GR": "tgr",
 };
 
 var NON_NATION_IDS = {
@@ -469,11 +471,12 @@ $(function(){
         case "USSR": return 'brown';
         case "EU": return 'teal';
         case "LoAN": return 'green';
+        case "GR": return 'yellow';
         case "undefined": return '';
       }
 
       this.colorI++;
-      var colorList = ['orange', 'yellow', 'purple', 'cyan', 'magenta',
+      var colorList = ['orange', 'purple', 'cyan', 'magenta',
                        'lightgreen', 'red'];
       if (this.colorI > colorList.length) {
         return this.randomColor();
