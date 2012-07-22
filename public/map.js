@@ -472,12 +472,12 @@ $(function(){
         case "EU": return 'teal';
         case "LoAN": return 'green';
         case "GR": return 'yellow';
+        case "SAC": return 'orange';
         case "undefined": return '';
       }
 
       this.colorI++;
-      var colorList = ['orange', 'purple', 'cyan', 'magenta',
-                       'lightgreen', 'red'];
+      var colorList = ['purple', 'cyan', 'magenta', 'lightgreen', 'red'];
       if (this.colorI > colorList.length) {
         return this.randomColor();
       }
