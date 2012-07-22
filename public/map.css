@@ -80,6 +80,10 @@ a {
   margin: 0;
 }
 
+#timeline {
+  padding-top: 20px;
+}
+
 #timeline a {
   padding-right: 10px;
 }
@@ -87,3 +91,5 @@ a {
 #footer {
   padding-top: 20px;
 }
+
+
