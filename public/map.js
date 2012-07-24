@@ -526,6 +526,7 @@ $(function(){
             map.opacify(cc, 1);
           }
         };
+
       });
     },
 
@@ -533,9 +534,6 @@ $(function(){
       var rc = function() { return Math.floor(Math.random() * 256); };
       return 'rgb(' + rc() + ',' + rc() + ',' + rc() + ')';
     },
-
-    // SVG Map
-    // ============================================
 
     opacify: function(cc, val) {
       this.countryApply(cc, function(country) {
@@ -558,14 +556,12 @@ $(function(){
      * Because countries are made up of mutiple paths,
      * this is used to apply functions to countries.
      * cc -  ISO_3166 country codes + some missing old countries
-     *       as found in stupidCountryIds
      * fn - functions(country) country will be a country element
      */
     countryApply: function(cc, fn){
-      // using ISO_3166 country codes + some missing old countries
+      // using ISO_3166 country codes
       // http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
       var i, paths;
-      //cc = stupidCountryIds[cc] || cc;
       var country = document.getElementById('visualization').contentDocument
                             .getElementById(cc);
       if (country) {
@@ -581,7 +577,6 @@ $(function(){
       }
     }
   });
-
 
   var TimelineView = Backbone.View.extend({
     el: $('#timeline'),
