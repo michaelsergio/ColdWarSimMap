@@ -102,14 +102,18 @@ $(function(){
   var World = Backbone.Collection.extend({
     model: Nation,
 
+    initialize: function(args) {
+      this.spreadsheetUrl = args.spreadsheetUrl;
+    },
+
     fetch: function(options) {
 
-      var url = SPREADSHEET_URL;
+      var url = this.spreadsheetUrl;
       // only call on pre initialized world
       if (options.year && this.models.length) {
         var currentYear = this.getYear();
         var n = currentYear - options.year;
-        url = SPREADSHEET_URL + '&gid=' + n;
+        url = this.spreadsheetUrl + '&gid=' + n;
       }
 
       var collection = this;
@@ -597,14 +601,15 @@ $(function(){
       "click a.year": "yearClicked"
     },
 
-    initialize: function() {
+    initialize: function(args) {
       this.controlview = this.options.controlview;
 
       this.currentYear = this.collection.getYear();
-      var nYears = this.currentYear - START_YEAR;
+      var startYear = Number(args.startYear);
+      var nYears = this.currentYear - startYear;
       var a, i, year;
       for (i=0; i <= nYears; i++) {
-        year = START_YEAR + i;
+        year = startYear + i;
         a = $('<a>');
         a.addClass('year');
         a.attr('href', '#year-' + year);
@@ -629,8 +634,24 @@ $(function(){
 
   });
 
+  function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+        });
+    return vars;
+  }
+
   function pullAllData() {
-    var world = new World();
+
+    var getParams = getUrlVars();
+    var url = getParams.gsid ? BASE + "?key=" + getParams.gsid
+                             : SPREADSHEET_URL;
+
+    var world = new World({
+      spreadsheetUrl: url
+    });
+
     world.fetch({
       success: function(){
         console.log(world);
@@ -640,8 +661,10 @@ $(function(){
         var mapview = new MapView({collection: world, infoview: infoview});
         infoview.mapview = mapview;
         var controlview = new ControlView({mapview: mapview});
-        var timelineview = new TimelineView({collection: world,
-                                             controlview:controlview});
+        var timelineview = new TimelineView({
+                                 collection: world,
+                                 controlview:controlview,
+                                 startYear: getParams.year || START_YEAR });
       }
     });
   }
