@@ -1,16 +1,4 @@
-/**
- * If your reading this I apologize for the way the code currently looks.
- * I plan on cleaning this up and open sourcing this soon enough.
- * However, since you're intrested, I have left this app unminifed 
- * in its current state for you.
- *
- * If you find any bugs before this goes up on git
- * send them to mikeserg at gmail
- *
- * Until then,
- * Abandon All Hope...
- */
-google.load('visualization', '1.0', {'packages':['geochart']});
+google.load('visualization', '1.0', {});
 
 var BASE = "https://spreadsheets.google.com/spreadsheet/pub";
 var SPREADSHEET_QS = "?key=0AhRtQr8CRozEdDhKZ0ZaMTNTaE02NUVDekphSlBJTVE";
