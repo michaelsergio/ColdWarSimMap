@@ -1,3 +1,5 @@
+# A starter file for redirecting clean urls
+
 require 'rubygems'
 require 'sinatra'
 
