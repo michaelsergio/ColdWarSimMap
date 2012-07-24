@@ -95,9 +95,8 @@ $(function(){
     },
 
     fetch: function(options) {
-
       var url = this.spreadsheetUrl;
-      // only call on pre initialized world
+      // Only use fetch with year on a pre-initialized world
       if (options.year && this.models.length) {
         var currentYear = this.getYear();
         var n = currentYear - options.year;
@@ -150,8 +149,10 @@ $(function(){
 
     getYear: function() {
       //return first found instance of a year
-      //TODO change
-      var nation = this.get('us');
+      var nation = this.find(function(country) {
+        var year = country.get('year');
+        return !!year;
+      });
       return nation.get('year');
     },
 
