@@ -318,7 +318,8 @@ $(function(){
     el: $('#search-widget'),
 
     events: {
-      "keypress #search": "updateOnEnter"
+      "keypress #search": "updateOnEnter",
+      "click  #search-button": "update"
     },
 
     initialize: function() {
@@ -351,12 +352,15 @@ $(function(){
 
     },
       
+    update: function() {
+      var cc = this.reverseMap[this.$el.find('#search').val()];
+      var nation = this.collection.get(cc);
+      this.infoview.showNation(nation);
+    },
 
     updateOnEnter: function(event) {
       if (event.keyCode === 13) {
-        var cc = this.reverseMap[this.$el.find('#search').val()];
-        var nation = this.collection.get(cc);
-        this.infoview.showNation(nation);
+        this.update();
       }
     }
   });

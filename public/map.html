@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Cold War Sim</title>
   <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
 
@@ -33,9 +34,10 @@
 </head>
 <body>
   <div class="container">
-    <span id="header">
-      <a href="http://www.reddit.com/r/coldwarsim"><img id="logo" src="logo.png" alt="Logo" /></a>
-    </span>
+    <div id="header" class="span12">
+      <a href="http://www.reddit.com/r/coldwarsim"><img id="logo" src="logo.png" alt="Back To Reddit" /></a>
+      <h1 id="title">Cold War Map</h1>
+    </div>
     <div id="control">
       <div id="type">
         <a id="type-pretty" href="#type-pretty">Pretty</a> | 
@@ -59,13 +61,17 @@
     </div>
 
     <div id="search-widget">
-      <label for="search">Search for Country: </label>
       <input id="search">
+      <input id="search-button" type="submit" value="Search Countries"></label>
     </div>
 
-    <div id="info" class="row">
+    <div id="info" class="span12">
 
-      <div id="nation-info">
+      <div id="nation-info" class="row">
+        <div id="lock-box">
+          <label for="locked">Lock</label>
+          <input id="lock" type="checkbox" />
+        </div>
         <div>
           <a id="name" href="#">-</a> -
           <span id="year">-</span>
@@ -132,7 +138,7 @@
       </div>
     </div>
 
-    <div id="timeline"></div>
+    <div id="timeline"</div>
 
     <div id="footer">
       <a href="/about">About</a>

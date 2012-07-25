@@ -26,6 +26,10 @@ ul {
   list-style-type: none;
 }
 
+#nation-info {
+  border-bottom: 1px solid hsl(0, 0%, 82%);
+}
+
 #nation-flag {
   position: relative;
   display: inline-block;
@@ -60,7 +64,8 @@ ul {
 }
 
 #timeline {
-  padding-top: 20px;
+  display: inline-block;
+  padding-top: 30px;
 }
 
 #timeline a {
@@ -71,4 +76,15 @@ ul {
   padding-top: 20px;
 }
 
+#lock-box {
+  float:right;
+}
+#lock-box label {
+  display: inline;
+}
 
+#title {
+  float: right;
+  display: inline;
+  padding-top: 20px;
+}
