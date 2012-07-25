@@ -466,11 +466,12 @@ $(function(){
         case "LoAN": return 'green';
         case "GR": return 'yellow';
         case "SAC": return 'orange';
+        case "SIC": return 'purple';
         case "undefined": return '';
       }
 
       this.colorI++;
-      var colorList = ['purple', 'cyan', 'magenta', 'lightgreen', 'red'];
+      var colorList = ['cyan', 'magenta', 'lightgreen', 'red'];
       if (this.colorI > colorList.length) {
         return this.randomColor();
       }
