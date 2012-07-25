@@ -3,8 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Cold War Sim</title>
+  <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
+
   <link rel="stylesheet" href="map.css" />
   <link rel="stylesheet" type="text/css" href="flags32-beta.css" />
+
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/themes/flick/jquery-ui.css" />
 
   <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -29,109 +32,111 @@
   
 </head>
 <body>
-  <span id="header">
-    <a href="http://www.reddit.com/r/coldwarsim"><img id="logo" src="logo.png" alt="Logo" /></a>
-  </span>
-  <div id="control">
-    <div id="type">
-      <a id="type-pretty" href="#type-pretty">Pretty</a> | 
-      <a id="type-alliance" href="#type-alliance">Alliances</a> | 
-      <a id="type-civpop" href="#type-civpop">Civilian Population</a> | 
-      <a id="type-milpop" href="#type-milpop">Military Population</a> | 
-      <a id="type-agripro" href="#type-agripro">Agricultural Output</a> | 
-      <a id="type-indupro" href="#type-indupro">Industrial Output</a> | 
-      <a id="type-totalpop" href="#type-totalpop">Total Population</a> |
-      <a id="type-totalpro" href="#type-totalpro">Total Output</a> | 
-      <a id="type-nukes" href="#type-nukes">Nuclear Weapons</a> 
+  <div class="container">
+    <span id="header">
+      <a href="http://www.reddit.com/r/coldwarsim"><img id="logo" src="logo.png" alt="Logo" /></a>
+    </span>
+    <div id="control">
+      <div id="type">
+        <a id="type-pretty" href="#type-pretty">Pretty</a> | 
+        <a id="type-alliance" href="#type-alliance">Alliances</a> | 
+        <a id="type-civpop" href="#type-civpop">Civilian Population</a> | 
+        <a id="type-milpop" href="#type-milpop">Military Population</a> | 
+        <a id="type-agripro" href="#type-agripro">Agricultural Output</a> | 
+        <a id="type-indupro" href="#type-indupro">Industrial Output</a> | 
+        <a id="type-totalpop" href="#type-totalpop">Total Population</a> |
+        <a id="type-totalpro" href="#type-totalpro">Total Output</a> | 
+        <a id="type-nukes" href="#type-nukes">Nuclear Weapons</a> 
+      </div>
+
+      <h2 id="visualization_year"></h2>
     </div>
 
-    <h2 id="visualization_year"></h2>
-  </div>
-
-  <div id="legend"></div>
-  
-  <div id="map">
-    <object data="/BlankMap-World6noss.svg" type="image/svg+xml" id="visualization"></object>
-  </div>
-
-  <div id="search-widget">
-    <label for="search">Search for Country: </label>
-    <input id="search">
-  </div>
-
-  <div id="info">
-
-    <div id="nation-info">
-      <div>
-        <a id="name" href="#">-</a> -
-        <span id="year">-</span>
-        <ul id="nation-flag" class="f32">
-          <li id="flag" class="flag"></li>
-        </ul>
-      </div>
-      <div>
-        ✪ 
-        <span id="capital">-</span>
-      </div>
-      <div>
-        Controlled by <a id="player" href=""></a>
-      </div>
+    <div id="legend"></div>
+    
+    <div id="map">
+      <object data="/BlankMap-World6noss.svg" type="image/svg+xml" id="visualization"></object>
     </div>
-    <div id="nation-stats">
-      <div id="population">
-        <div>
-          Civilian Population: 
-          <span id="civpop">-</span>
-        </div>
-        <div>
-          Military Population: 
-          <span id="milpop">-</span>
-        </div>
-        <div>
-          Total Population: 
-          <span id="totalpop">-</span>
-        </div>
-      </div>
 
-      <div id="production">
-        <div>
-          Agricultural Production: 
-          <span id="agripro">-</span>
-        </div>
-        <div>
-          Industrial Production: 
-          <span id="indupro">-</span>
-        </div>
-        <div>
-          Total Production: 
-          <span id="totalpro">-</span>
-        </div>
-      </div>
+    <div id="search-widget">
+      <label for="search">Search for Country: </label>
+      <input id="search">
+    </div>
 
-      <div id="political">
+    <div id="info">
+
+      <div id="nation-info">
         <div>
-          Nuclear Weapons: 
-          <span id="nukes">-</span>
-        </div>
-        <div>
-          Territory: 
-          <a id="territory" href="#">-</a>
-        </div>
-        <div>
-          Alliance: 
-          <ul id='alliance-flags' class="f32">
-            <li id="alliance-flag"></li>
+          <a id="name" href="#">-</a> -
+          <span id="year">-</span>
+          <ul id="nation-flag" class="f32">
+            <li id="flag" class="flag"></li>
           </ul>
-          <span id="alliance">-</span>
+        </div>
+        <div>
+          ✪ 
+          <span id="capital">-</span>
+        </div>
+        <div>
+          Controlled by <a id="player" href=""></a>
+        </div>
+      </div>
+      <div id="nation-stats">
+        <div id="population">
+          <div>
+            Civilian Population: 
+            <span id="civpop">-</span>
+          </div>
+          <div>
+            Military Population: 
+            <span id="milpop">-</span>
+          </div>
+          <div>
+            Total Population: 
+            <span id="totalpop">-</span>
+          </div>
+        </div>
+
+        <div id="production">
+          <div>
+            Agricultural Production: 
+            <span id="agripro">-</span>
+          </div>
+          <div>
+            Industrial Production: 
+            <span id="indupro">-</span>
+          </div>
+          <div>
+            Total Production: 
+            <span id="totalpro">-</span>
+          </div>
+        </div>
+
+        <div id="political">
+          <div>
+            Nuclear Weapons: 
+            <span id="nukes">-</span>
+          </div>
+          <div>
+            Territory: 
+            <a id="territory" href="#">-</a>
+          </div>
+          <div>
+            Alliance: 
+            <ul id='alliance-flags' class="f32">
+              <li id="alliance-flag"></li>
+            </ul>
+            <span id="alliance">-</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div id="timeline"></div>
+    <div id="timeline"></div>
 
-  <div id="footer">
-    <a href="/about">About</a>
+    <div id="footer">
+      <a href="/about">About</a>
+    </div>
   </div>
 </body>
 </html>
