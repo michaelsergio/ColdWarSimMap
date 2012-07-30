@@ -84,7 +84,17 @@ ul {
 }
 
 #title {
-  float: right;
   display: inline;
   padding-top: 20px;
+  float: right;
+}
+
+#map {
+  /* This is a kludge for chrome.
+   * Mouseover slows to a halt when highlighting nation.
+   * A paint call is called on entire svg rather than just the nation path
+   * taking up to 2 seconds.
+   * This is not a problem on firefox.
+   */
+  margin-left: 160px;
 }
