@@ -231,7 +231,6 @@ $(function(){
         this[this.lastAction]();
       }
     }
-
   });
 
 
@@ -241,7 +240,8 @@ $(function(){
 
     events: {
       "click #territory": "showTerritory",
-      "click #name": "showTerritory"  
+      "click #name": "showTerritory",
+      "change #lock": "toggleLock"
     },
 
     initialize: function() {
@@ -249,7 +249,32 @@ $(function(){
       this.alliancesWithFlag = ALLIANCE_FLAGS;
     },
 
+    toggleLock: function() {
+      if (this.$el.find("#lock").is(":checked")) {
+        this.lock();
+      }
+      else {
+        this.unlock();
+      }
+    },
+
+    lock: function() {
+      this.$el.find("#lock").attr("checked", true);
+      this.$el.addClass('highlight');
+    },
+
+    unlock: function() {
+      this.$el.find("#lock").attr("checked", false);
+      this.$el.removeClass('highlight');
+    },
+
     showNation: function(cc) {
+      if (!this.$el.find("#lock").is(":checked")) {
+        this.showNationInfo(cc);
+      }
+    },
+
+    showNationInfo: function(cc) {
       var nation = this.collection.get(cc);
       
       if (!nation) {
@@ -530,6 +555,10 @@ $(function(){
           if (shouldOpacify) {
             map.opacify(cc, 1);
           }
+        };
+
+        country.onclick = function() {
+          map.infoview.lock();
         };
 
       });
